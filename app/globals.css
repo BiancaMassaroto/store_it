@@ -1,26 +1,466 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   1. PLUGINS NATIVOS DO TAILWIND V4
+   ========================================================================== */
+@plugin "tailwindcss-animate";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --radius: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ==========================================================================
+   2. CONFIGURAÇÃO DE TEMA DO PROJETO (Substitui o tailwind.config)
+   ========================================================================== */
+@theme {
+  --font-poppins: var(--font-poppins);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Cores Customizadas do Projeto */
+  --color-brand: #fa7275;
+  --color-brand-100: #ea6365;
+  --color-red: #ff7474;
+  --color-error: #b80000;
+  --color-green: #3dd9b3;
+  --color-blue: #56b8ff;
+  --color-pink: #eea8fd;
+  --color-orange: #f9ab72;
+
+  --color-light-100: #333f4e;
+  --color-light-200: #a3b2c7;
+  --color-light-300: #f2f5f9;
+  --color-light-400: #f2f4f8;
+
+  --color-dark-100: #04050c;
+  --color-dark-200: #131524;
+
+  /* Sombras Customizadas */
+  --shadow-drop-1: 0px 10px 30px 0px rgba(66, 71, 97, 0.1);
+  --shadow-drop-2: 0 8px 30px 0 rgba(65, 89, 214, 0.3);
+  --shadow-drop-3: 0 8px 30px 0 rgba(65, 89, 214, 0.1);
+
+  /* Variáveis de Borda para Compatibilidade com Shadcn */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Configuração de Animação do Cursor */
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
   }
+}
+
+/* ==========================================================================
+   3. ESTILOS DE BASE GLOBAIS
+   ========================================================================== */
+@utility scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+* {
+  @apply scroll-smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), sans-serif;
+  @apply bg-white text-dark-200 min-h-screen;
+}
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 3px;
+  border-radius: 50px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 50px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #fa7275;
+}
+
+/* Transformado em Utility nativa para funcionar dentro de outros @apply */
+@utility remove-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+.recharts-responsive-container {
+  height: initial !important;
+}
+
+/* ==========================================================================
+   4. CLASSES UTILITÁRIAS DO PROJETO (Substitui o @layer utilities antigo)
+   ========================================================================== */
+
+/* ===== TYPOGRAPHY ===== */
+@utility h1 {
+  @apply text-[34px] leading-[42px] font-bold;
+}
+@utility h2 {
+  @apply text-[24px] leading-[36px] font-bold;
+}
+@utility h3 {
+  @apply text-[20px] leading-[28px] font-semibold;
+}
+@utility h4 {
+  @apply text-[18px] leading-[20px] font-medium;
+}
+@utility h5 {
+  @apply text-[16px] leading-[24px] font-semibold;
+}
+@utility subtitle-1 {
+  @apply text-[16px] leading-[24px] font-medium;
+}
+@utility subtitle-2 {
+  @apply text-[14px] leading-[20px] font-semibold;
+}
+@utility body-1 {
+  @apply text-[16px] leading-[24px] font-normal;
+}
+@utility body-2 {
+  @apply text-[14px] leading-[20px] font-normal;
+}
+@utility button {
+  @apply text-[14px] leading-[20px] font-medium;
+}
+@utility caption {
+  @apply text-[12px] leading-[16px] font-normal;
+}
+@utility overline {
+  @apply text-[10px] leading-[14px] font-normal;
+}
+
+/* ===== HELPER CLASSES ===== */
+@utility container {
+  @apply mx-auto max-w-7xl px-5;
+}
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+@utility primary-btn {
+  @apply bg-brand hover:bg-brand-100 transition-all rounded-full text-[14px] leading-[20px] font-medium;
+}
+
+/* ===== SHADCN OVERRIDES ===== */
+@utility shad-no-focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+@utility shad-input {
+  @apply border-none shadow-none p-0 outline-none placeholder:text-light-200 text-[14px] leading-[20px] font-normal;
+}
+@utility shad-form-item {
+  @apply flex h-[78px] flex-col justify-center rounded-xl border border-light-300 px-4 shadow-drop-1;
+}
+@utility shad-form-label {
+  @apply text-light-100 pt-2 text-[14px] leading-[20px] font-normal w-full;
+}
+@utility shad-form-message {
+  @apply text-red text-[14px] leading-[20px] font-normal ml-4;
+}
+@utility shad-alert-dialog {
+  @apply space-y-4 max-w-[95%] sm:w-fit rounded-xl md:rounded-[30px] px-4 md:px-8 py-10 bg-white outline-none;
+}
+@utility shad-submit-btn {
+  @apply bg-brand text-[14px] leading-[20px] font-medium hover:bg-brand-100 transition-all rounded-full;
+}
+@utility shad-otp {
+  @apply w-full flex gap-1 sm:gap-2 justify-between;
+}
+@utility shad-otp-slot {
+  @apply text-[40px] font-medium rounded-xl ring-brand shadow-drop-1 text-brand-100 justify-center flex border-2 border-light-300 size-12 md:size-16 gap-5;
+}
+@utility shad-sheet {
+  padding-top: 0 !important;
+}
+.shad-sheet button,
+.shad-dialog button {
+  outline: none !important;
+}
+.shad-dropdown-item {
+  cursor: pointer !important;
+}
+@utility shad-dialog {
+  @apply rounded-[26px] w-[90%] max-w-[400px] px-6 py-8;
+}
+.shad-chart-title {
+  color: white !important;
+}
+.shad-select-item {
+  cursor: pointer !important;
+}
+
+/* ===== COMPONENTS STYLE CLASSES ===== */
+
+/* Navigation Icons */
+@utility nav-icon {
+  width: 24px !important;
+  filter: invert(1) opacity(0.25) !important;
+}
+@utility nav-icon-active {
+  filter: invert(0) opacity(1) !important;
+}
+
+/* Root Layout */
+@utility main-content {
+  @apply remove-scrollbar h-full flex-1 overflow-auto bg-light-400 px-5 py-7 sm:mr-7 sm:rounded-[30px] md:mb-7 md:px-9 md:py-10;
+}
+
+/* Dashboard Component */
+@utility dashboard-container {
+  @apply mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 xl:gap-10;
+}
+@utility dashboard-summary-list {
+  @apply mt-6 grid grid-cols-1 gap-4 xl:mt-10 xl:grid-cols-2 xl:gap-9;
+}
+@utility dashboard-summary-card {
+  @apply relative mt-6 rounded-[20px] bg-white p-5 transition-all hover:scale-105;
+}
+@utility summary-type-icon {
+  @apply absolute -left-3 top-[-25px] z-10 w-[190px] object-contain;
+}
+@utility summary-type-size {
+  @apply relative z-20 w-full text-right text-[18px] leading-[20px] font-medium;
+}
+@utility summary-type-title {
+  @apply relative z-20 text-center text-[16px] leading-[24px] font-semibold;
+}
+@utility dashboard-recent-files {
+  @apply h-full rounded-[20px] xl:h-[654px] overflow-auto bg-white p-5 xl:p-7;
+}
+@utility recent-file-details {
+  @apply flex w-full justify-between items-center;
+}
+@utility recent-file-name {
+  @apply subtitle-2 line-clamp-1 w-full text-light-100 sm:max-w-[200px] lg:max-w-[250px];
+}
+@utility recent-file-date {
+  @apply body-2 text-light-100/80;
+}
+@utility empty-list {
+  @apply body-1 mt-10 text-center text-light-200;
+}
+
+/* Dynamic Pages Component */
+@utility page-container {
+  @apply mx-auto flex w-full max-w-7xl flex-col items-center gap-8;
+}
+@utility total-size-section {
+  @apply flex mt-2 flex-col justify-between sm:flex-row sm:items-center;
+}
+@utility file-list {
+  @apply grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+}
+@utility sort-container {
+  @apply mt-5 flex items-center sm:mt-0 sm:gap-3;
+}
+
+/* Actions Dropdown Components */
+@utility rename-input-field {
+  @apply body-2 h-[52px] w-full rounded-full border px-4 shadow-drop-1;
+}
+@utility delete-confirmation {
+  @apply text-center text-light-100;
+}
+@utility delete-file-name {
+  @apply font-medium text-brand-100;
+}
+@utility modal-cancel-button {
+  @apply h-[52px] flex-1 rounded-full bg-white text-light-100 hover:bg-transparent;
+}
+@utility modal-submit-button {
+  @apply primary-btn mx-0 h-[52px] w-full flex-1;
+}
+
+/* Actions Modal Content */
+@utility file-details-thumbnail {
+  @apply mb-1 flex items-center gap-3 rounded-xl border border-light-200/40 bg-light-400/50 p-3;
+}
+@utility file-details-label {
+  @apply body-2 w-[30%] text-light-100;
+}
+@utility file-details-value {
+  @apply subtitle-2 flex-1;
+}
+@utility share-wrapper {
+  @apply mt-2 space-y-2;
+}
+@utility share-input-field {
+  @apply body-2 h-[52px] w-full rounded-full border px-4 shadow-drop-1;
+}
+@utility share-remove-user {
+  @apply rounded-full bg-transparent text-light-100 shadow-none hover:bg-transparent;
+}
+@utility remove-icon {
+  @apply aspect-square rounded-full;
+}
+
+/* Authentication Form (AuthForm) */
+@utility auth-form {
+  @apply flex max-h-[800px] w-full max-w-[580px] flex-col justify-center space-y-6 transition-all lg:h-full lg:space-y-8;
+}
+@utility form-title {
+  @apply h1 text-center text-light-100 md:text-left;
+}
+@utility form-submit-button {
+  @apply primary-btn h-[66px];
+}
+@utility error-message {
+  @apply body-2 mx-auto w-fit rounded-xl bg-error/5 px-8 py-4 text-center text-error;
+}
+
+/* File Card Component */
+@utility file-card {
+  @apply flex cursor-pointer flex-col gap-6 rounded-[18px] bg-white p-5 shadow-sm transition-all hover:shadow-drop-3;
+}
+@utility file-card-details {
+  @apply flex flex-col gap-2 text-light-100;
+}
+
+/* Chart Component */
+@utility chart {
+  @apply flex items-center rounded-[20px] bg-brand p-2 text-white md:flex-col xl:flex-row;
+}
+@utility chart-container {
+  @apply mx-auto aspect-square w-[180px] text-white xl:w-[200px];
+}
+
+/* Corrigido CSS puro para seletores filhos exigidos pelo Tailwind v4 */
+.polar-grid:first-child {
+  fill: rgba(255, 255, 255, 0.2);
+}
+.polar-grid:last-child {
+  fill: var(--color-brand);
+}
+
+@utility chart-details {
+  @apply flex-1 items-start px-3 py-0 sm:px-5 lg:p-3 xl:pr-5;
+}
+@utility chart-total-percentage {
+  fill: white;
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+@utility chart-title {
+  @apply h3 font-bold md:text-center lg:text-left;
+}
+@utility chart-description {
+  @apply subtitle-1 mt-2 w-full text-white/70 md:text-center lg:text-left;
+} /* FileUploader Component */
+@utility uploader-button {
+  @apply primary-btn h-[52px] gap-2 px-10 shadow-drop-1;
+}
+@utility uploader-preview-list {
+  @apply fixed bottom-10 right-10 z-50 flex size-full h-fit max-w-[480px] flex-col gap-3 rounded-[20px] bg-white p-7 shadow-drop-3;
+}
+@utility uploader-preview-item {
+  @apply flex items-center justify-between gap-3 rounded-xl p-3 shadow-drop-3;
+}
+@utility preview-item-name {
+  @apply subtitle-2 mb-2 line-clamp-1 max-w-[300px];
+}
+@utility error-toast {
+  background-color: var(--color-red) !important;
+  border-radius: 10px !important;
+} /* Main Application Header */
+@utility header {
+  @apply hidden items-center justify-between gap-5 p-5 sm:flex lg:py-7 xl:gap-10;
+}
+@utility header-wrapper {
+  @apply flex-center min-w-fit gap-4;
+}
+@utility sign-out-button {
+  @apply flex-center h-[52px] min-w-[54px] items-center rounded-full bg-brand/10 p-0 text-brand shadow-none transition-all hover:bg-brand/20;
+} /* Mobile Navigation Layout */
+@utility mobile-header {
+  @apply flex h-[60px] justify-between px-5 sm:hidden;
+}
+@utility header-user {
+  @apply my-3 flex items-center gap-2 rounded-full p-1 text-light-100 sm:justify-center sm:bg-brand/10 lg:justify-start lg:p-3;
+}
+@utility header-user-avatar {
+  @apply aspect-square w-10 rounded-full object-cover;
+}
+@utility mobile-nav {
+  @apply flex-1 gap-1 text-brand text-[16px] leading-[24px] font-semibold;
+}
+@utility mobile-nav-list {
+  @apply flex flex-1 flex-col gap-4;
+}
+@utility mobile-nav-item {
+  @apply flex text-light-100 gap-4 w-full justify-start items-center px-6 h-[52px] rounded-full text-[16px] leading-[24px] font-semibold;
+}
+@utility mobile-sign-out-button {
+  @apply flex h-[52px] w-full items-center gap-4 rounded-full bg-brand/10 px-6 text-brand shadow-none transition-all hover:bg-brand/20 text-[16px] leading-[24px] font-semibold;
+} /* OTP Modal Content */
+@utility otp-close-button {
+  @apply absolute -right-1 -top-7 cursor-pointer sm:-right-2 sm:-top-4;
+} /* Search Bar Component */
+@utility search {
+  @apply relative w-full md:max-w-[480px];
+}
+@utility search-input-wrapper {
+  @apply flex h-[52px] flex-1 items-center gap-3 rounded-full px-4 shadow-drop-3;
+}
+@utility search-input {
+  @apply border-none p-0 shadow-none outline-none text-[14px] leading-[20px] font-normal placeholder:text-light-200;
+}
+@utility search-result {
+  @apply absolute left-0 top-16 z-50 flex w-full flex-col gap-3 rounded-[20px] bg-white p-4;
+}
+@utility empty-result {
+  @apply text-center text-light-100 text-[14px] leading-[20px] font-normal;
+} /* Desktop Sidebar Layout */
+@utility sidebar {
+  @apply remove-scrollbar hidden h-screen w-[90px] flex-col overflow-auto px-5 py-7 sm:flex lg:w-[280px] xl:w-[325px];
+}
+@utility sidebar-nav {
+  @apply mt-9 flex-1 gap-1 text-brand text-[16px] leading-[24px] font-semibold;
+}
+@utility sidebar-nav-item {
+  @apply flex text-light-100 gap-4 rounded-xl lg:w-full justify-center lg:justify-start items-center lg:px-[30px] h-[52px] lg:rounded-full text-[16px] leading-[24px] font-semibold;
+}
+@utility sidebar-user-info {
+  @apply mt-4 flex items-center justify-center gap-2 rounded-full bg-brand/10 p-1 text-light-100 lg:justify-start lg:p-3;
+}
+@utility sidebar-user-avatar {
+  @apply aspect-square w-10 rounded-full object-cover;
+} /* Active State Modifier */
+@utility shad-active {
+  @apply bg-brand text-white shadow-drop-2;
+} /* Filter Sort Component */
+@utility sort-select {
+  @apply h-11 w-full rounded-[8px] border-transparent bg-white shadow-sm sm:w-[210px] outline-none;
+}
+@utility sort-select-content {
+  box-shadow: var(--shadow-drop-3) !important;
+} /* Media/File Thumbnail */
+@utility thumbnail {
+  @apply flex-center size-[50px] min-w-[50px] overflow-hidden rounded-full bg-brand/10;
+}
+@utility thumbnail-image {
+  @apply size-full object-cover object-center;
 }
