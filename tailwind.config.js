@@ -1,44 +1,45 @@
 import tailwindcssAnimate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
-const config = {
-  darkMode: "class",
+module.exports = {
+  darkMode: ["class"],
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
+      boxShadow: {
+        "drop-1": "0px 10px 30px 0px rgba(22, 34, 51, 0.08)",
+        "drop-2": "0px 10px 30px 0px rgba(66, 71, 97, 0.20)", // Classe shadow-drop-2 resolvida
+        "drop-3": "0px 10px 30px 0px rgba(66, 71, 97, 0.30)",
+      },
       colors: {
         brand: {
-          DEFAULT: "#FA7275",
-          100: "#EA6365",
+          DEFAULT: "#fa7275",
+          100: "#ea6365",
         },
-        red: "#FF7474",
+        red: "#ff7474",
         error: "#b80000",
-        green: "#3DD9B3",
-        blue: "#56B8FF",
-        pink: "#EEA8FD",
-        orange: "#F9AB72",
+        green: "#3dd9b3",
+        blue: "#56b8ff",
+        pink: "#eea8fd",
+        orange: "#f9ab72",
         light: {
-          100: "#333F4E",
-          200: "#A3B2C7",
-          300: "#F2F5F9",
-          400: "#F2F4F8",
+          100: "#333f4e",
+          200: "#a3b2c7",
+          300: "#f2f5f9",
+          400: "#f2f4f8",
         },
         dark: {
-          100: "#04050C",
+          100: "#04050c",
           200: "#131524",
         },
       },
       fontFamily: {
         poppins: ["var(--font-poppins)"],
-      },
-      boxShadow: {
-        "drop-1": "0px 10px 30px 0px rgba(66, 71, 97, 0.1)",
-        "drop-2": "0 8px 30px 0 rgba(65, 89, 214, 0.3)",
-        "drop-3": "0 8px 30px 0 rgba(65, 89, 214, 0.1)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -58,5 +59,3 @@ const config = {
   },
   plugins: [tailwindcssAnimate],
 };
-
-export default config;
