@@ -93,3 +93,19 @@ declare interface TotalSpaceProps {
   audio: FileSpaceInfo;
   other: FileSpaceInfo;
 }
+
+interface FileOwner {
+  name: string;
+  email: string;
+  $id: string;
+  fullName: string;
+}
+
+declare interface FileDocument extends Models.Document {
+  name: string;
+  url: string;
+  type: string;
+  size: number;
+  extension: string;
+  owner: FileOwner;
+}
