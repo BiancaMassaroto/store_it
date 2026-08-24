@@ -108,4 +108,6 @@ declare interface FileDocument extends Models.Document {
   size: number;
   extension: string;
   owner: FileOwner;
+  bucketFileId: string;
+  users: string[];
 }

@@ -1,5 +1,8 @@
+"use client";
+
 import { FileDocument } from "@/types";
-import Link from "next/link";
+// import Link from "next/navigation"; // Alterado para o roteador do Next se necessário, ou mantenha "next/link"
+import LinkNext from "next/link";
 import React from "react";
 import Thumbnail from "./Thumbnail";
 import { convertFileSize } from "@/lib/utils";
@@ -31,7 +34,7 @@ const Card = ({ file, currentUser }: CardProps) => {
       : embeddedName || "Shared User";
 
   return (
-    <Link
+    <LinkNext
       href={`${file?.url}&project=${appwriteConfig.projectId}`}
       target="_blank"
       className="file-card flex flex-col gap-4 p-5 bg-white border border-light-300 rounded-2xl shadow-sm hover:shadow-md transition-all w-full max-w-[300px] min-w-[260px] justify-between h-[200px]"
@@ -45,8 +48,15 @@ const Card = ({ file, currentUser }: CardProps) => {
           imageClassName="!size-11"
         />
 
-        <div className="flex flex-col items-end justify-between">
-          <ActionDropdown />
+        {/* 2. Agora o Next.js aceita perfeitamente este bloco interativo de código */}
+        <div
+          className="flex flex-col items-end justify-between"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        >
+          <ActionDropdown file={file} currentUser={currentUser} />
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
       </div>
@@ -64,7 +74,7 @@ const Card = ({ file, currentUser }: CardProps) => {
           By: {ownerName}
         </p>
       </div>
-    </Link>
+    </LinkNext>
   );
 };
 
