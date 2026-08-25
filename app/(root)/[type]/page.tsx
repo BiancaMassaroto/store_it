@@ -2,13 +2,18 @@ import Card from "@/components/Card";
 import Sort from "@/components/Sort";
 import { getFiles } from "@/lib/actions/file.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
-import { FileDocument, SearchParamProps } from "@/types";
+import { getFileTypesParams } from "@/lib/utils";
+import { FileDocument, FileType, SearchParamProps } from "@/types";
 import React from "react";
 
-const page = async ({ params }: SearchParamProps) => {
+const page = async ({ searchParams, params }: SearchParamProps) => {
   const type = ((await params)?.type as string) || "";
+  const searchText = ((await searchParams)?.query as string) || "";
+  const sort = ((await searchParams)?.sort as string) || "";
 
-  const files = await getFiles();
+  const types = getFileTypesParams(type) as FileType[];
+
+  const files = await getFiles({ types, searchText, sort });
 
   const currentUser = await getCurrentUser();
 

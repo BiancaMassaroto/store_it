@@ -25,7 +25,7 @@ declare interface GetFilesProps {
   types: FileType[];
   searchText?: string;
   sort?: string;
-  limit?: string;
+  limit?: number;
 }
 
 declare interface RenameFileProps {
