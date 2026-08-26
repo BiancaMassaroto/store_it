@@ -68,7 +68,7 @@ export const sortTypes = [
     value: "name-asc",
   },
   {
-    label: "Name (A-Z)",
+    label: "Name (Z-A)",
     value: "name-desc",
   },
   {
