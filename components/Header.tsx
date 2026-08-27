@@ -7,11 +7,11 @@ import { signOutUser } from "@/lib/actions/user.actions";
 const Header = ({
   userId,
   accountId,
-  searchQuery,
+  searchQuery = "",
 }: {
   userId: string;
   accountId: string;
-  searchQuery: string;
+  searchQuery?: string;
 }) => {
   return (
     <header className="header">
